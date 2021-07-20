@@ -1,0 +1,110 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "9a46d3f1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import os  #os module for interacting with the operating system\n",
+    "import cv2  #cv2 module to handle computer vision\n",
+    "import glob  #glob module to retrieve filename/pathname matching a specified pattern\n",
+    "\n",
+    "\n",
+    " #folder that contains the video of our dataset\n",
+    "pain_videos = glob.glob('Desktop/ai_ml_babies')  \n",
+    "\n",
+    "\n",
+    "#an empty list of videos\n",
+    "pain_video_list = []  \n",
+    "\n",
+    "\n",
+    " #for loop to extract all the videos from the folder\n",
+    "for video in pain_videos:  \n",
+    "    for vid in glob.glob(video+'/*.mp4'):  #to make sure the video files have the correct extensions\n",
+    "        pain_video_list.append(vid)\n",
+    "        \n",
+    "        \n",
+    "i = 1\n",
+    "count = 0\n",
+    "\n",
+    "for j in range(0, len(pain_video_list)):\n",
+    "    \n",
+    "    video_content = pain_video_list[j]\n",
+    "    \n",
+    "    #to extract the frames from the video file \n",
+    "    video_cap = cv2.VideoCapture(video_content)\n",
+    "    \n",
+    "    #the video file will open\n",
+    "    while video_cap.isOpened(): \n",
+    "        \n",
+    "        #read() captures frame by frame and returns two values, frame and ret, if frame is read correctly ret will be true else false\n",
+    "        ret, frame = video_cap.read()  \n",
+    "            \n",
+    "        if ret == False:\n",
+    "            break\n",
+    "            \n",
+    "        if i%24 == 0:\n",
+    "            count += 1 #to keep a count on the frames\n",
+    "            \n",
+    "            #folder to store colored images\n",
+    "            colored_frames = 'Desktop/colored_frames' +'/' +'PAIN_' + str(count) + '.jpg'\n",
+    "            \n",
+    "            #saving the colored images\n",
+    "            cv2.imwrite(colored_frames, frame) \n",
+    "            \n",
+    "            #converting the image to gray\n",
+    "            grayImage = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) \n",
+    "            \n",
+    "            #folder to store gray images\n",
+    "            gray_frames = 'Desktop/gray_frames' + '/' + 'PAIN_GRAY_' + str(count) + '.jpg' \n",
+    "            \n",
+    "            #saving the gray image\n",
+    "            cv2.imwrite(gray_frames, grayImage)\n",
+    "        i += 1 \n",
+    "        \n",
+    "        \n",
+    "    video_cap.release()  #closes the window file\n",
+    "    cv2.destroyAllWindows()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "55b944ce",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "49ed8cb4",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
